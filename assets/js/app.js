@@ -125,6 +125,7 @@ function touchplr2(plr, meto) {
 document.addEventListener("visibilitychange", function() {
     if (document.hidden) {
         pause = true
+        pe = true
         console.log("Game paused due to inactivity/not on the tab")
     }
 })
