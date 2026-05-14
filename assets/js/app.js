@@ -25,6 +25,7 @@ let death2 = document.getElementById("death2")
 let click = document.getElementById("click")
 let reward = document.getElementById("reward")
 let jump = document.getElementById("jump")
+let hv = document.getElementById("hv")
 
 let m1 = document.getElementById("music1")
 let m2 = document.getElementById("music2")
@@ -46,13 +47,24 @@ let ground = 300
 let menu = true
 let pause = true
 let pe = false
+let rp = false
 let mutebool = Number(localStorage.getItem("muteboolsave")) || false
 
 document.addEventListener("keydown", keydown)
 cog.addEventListener("click", cogclick)
 muteb.addEventListener("click", mutee)
+
 menub.addEventListener("click", menue)
+menub.addEventListener("mouseenter", menuen)
+menub.addEventListener("mouseleave", menule)
+menub.addEventListener("mousedown", menud)
+menub.addEventListener("mouseup", menuu)
+
 rb.addEventListener("click", restart)
+rb.addEventListener("mouseenter", hrb)
+rb.addEventListener("mouseleave", hrbl)
+rb.addEventListener("mousedown", hrbd)
+rb.addEventListener("mouseup", hrbu)
 
 function reset() {
     spike.style.left = "100%"
@@ -61,6 +73,8 @@ function reset() {
     score = 0
     grav = 0
     pause = false
+    pe = false
+    rp = false
 }
 
 function saveall() {
@@ -76,6 +90,7 @@ function mute() {
     click.volume = 0
     reward.volume = 0
     jump.volume = 0
+    hv.volume = 0
 
     //music
     m1.volume = 0
@@ -91,6 +106,7 @@ function unmute() {
     click.volume = 1
     reward.volume = 1
     jump.volume = 1
+    hv.volume = 1
 
     //music
     m1.volume = 1
@@ -131,7 +147,7 @@ document.addEventListener("visibilitychange", function() {
 })
 
 function keydown(key) {
-    if (pause === true) {return}
+    if (pause === true || rp === true) {return}
 
     let top = parseInt(plr.style.top) || ground;
 
@@ -181,6 +197,7 @@ function menue() {
                                             menudiv.style.visibility = "hidden"
 
                                             pause = false
+                                            pe = false
                                         }, 100)
                                     }, 50)
                                 }, 50)
@@ -207,6 +224,48 @@ function cogclick() {
     click.play()
 }
 
+//HOVER
+
+function hrb() {
+    hv.currentTime = 0
+    hv.play()
+    rb.style.scale = "1.1"
+}
+
+function hrbl() {
+    rb.style.scale = "1"
+}
+
+function hrbd() {
+    rb.style.scale = "0.95"
+}
+
+function hrbu() {
+    rb.style.scale = "1.1"
+}
+
+//----
+
+function menuen() {
+    hv.currentTime = 0
+    hv.play()
+    menub.style.scale = "1.1"
+}
+
+function menule() {
+    menub.style.scale = "1"
+}
+
+function menud() {
+    menub.style.scale = "0.95"
+}
+
+function menuu() {
+    menub.style.scale = "1.1"
+}
+
+//END
+
 function mutee() {
     click.currentTime = 0
     if (mutebool === true) {
@@ -225,7 +284,7 @@ function restart() {
 }
 
 setInterval(function() {
-    if (pause === true) {return}
+    if (pause === true || rp === true) {return}
 
     let top = parseInt(plr.style.top) || ground;
 
@@ -242,13 +301,13 @@ setInterval(function() {
 }, 16)
 
 setInterval(function() {
-    if (pause === false) {
+    if (pause === false && rp === false) {
         score += 1
     }
 }, 100)
 
 setInterval(function() {
-    if (pause === true) {return}
+    if (pause === true || rp === true) {return}
 
     plr.src = "assets/img/pixelspacecat2fix.png"
 
@@ -327,7 +386,7 @@ setInterval(function() {
 spike.style.left = "100%"
 
 setInterval(function() {
-    if (pause === true) {return}
+    if (pause === true || rp === true) {return}
 
     let val = parseFloat(spike.style.left)
     val -= 1
@@ -353,6 +412,8 @@ setInterval(function() {
         }
 
         ranhp = true
+
+        rp = true
 
         pause = true
 
